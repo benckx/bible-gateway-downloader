@@ -1,9 +1,13 @@
-# Bible Gateway Downloader
+# About
 
-A small Kotlin CLI that scrapes a full Bible **book** from
-[BibleGateway](https://www.biblegateway.com/) and exports it to a single **PDF**
-and **EPUB**. Each document also gets the book's **Wikipedia article** appended
-as an appendix (the EPUB includes it as a table-of-contents entry).
+I wanted to be able to read Bible books on an epaper device but EPUB containing all books were impractical. I also
+wanted to have the Wikipedia article in the same document to get some context.
+
+So I made a small Kotlin CLI that scrapes a full Bible **book** from [BibleGateway](https://www.biblegateway.com/) and
+exports it to a single **PDF** and **EPUB**. Each document also gets the book's **Wikipedia article** appended as an
+appendix (the EPUB includes it as a table-of-contents entry).
+
+Entirely Vibe-coded with Claude Opus.
 
 ## Features
 
@@ -49,12 +53,12 @@ java -jar build/libs/bible-gateway-downloader-all.jar
 java -jar build/libs/bible-gateway-downloader-all.jar --version SG21 --book Ezek
 ```
 
-| Option            | Description                                   | Default |
-|-------------------|-----------------------------------------------|---------|
-| `-v`, `--version` | Bible version code (see below)                | —       |
-| `-b`, `--book`    | Book OSIS code (e.g. `Ezek`) or English name  | —       |
-| `-s`, `--start`   | First chapter to download                     | `1`     |
-| `-o`, `--out`     | Output directory                              | `out`   |
+| Option            | Description                                  | Default |
+|-------------------|----------------------------------------------|---------|
+| `-v`, `--version` | Bible version code (see below)               | —       |
+| `-b`, `--book`    | Book OSIS code (e.g. `Ezek`) or English name | —       |
+| `-s`, `--start`   | First chapter to download                    | `1`     |
+| `-o`, `--out`     | Output directory                             | `out`   |
 
 Files are written as `<book>-<version>.pdf` / `.epub` in the output directory.
 
