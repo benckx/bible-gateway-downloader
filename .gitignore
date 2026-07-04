@@ -32,3 +32,6 @@ replay_pid*
 build
 
 *.idea
+
+# Generated PDF/EPUB output
+out/
