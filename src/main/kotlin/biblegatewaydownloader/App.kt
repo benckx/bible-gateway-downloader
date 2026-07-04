@@ -4,7 +4,9 @@ import biblegatewaydownloader.cli.InteractivePrompt
 import biblegatewaydownloader.cli.PromptAbortedException
 import biblegatewaydownloader.client.BibleGatewayClient
 import biblegatewaydownloader.client.BookCrawler
+import biblegatewaydownloader.client.WikipediaClient
 import biblegatewaydownloader.epub.EpubWriter
+import biblegatewaydownloader.model.Appendix
 import biblegatewaydownloader.model.BibleBook
 import biblegatewaydownloader.model.BibleVersion
 import biblegatewaydownloader.model.Testament
@@ -90,14 +92,29 @@ private fun runDownload(
         return@runBlocking
     }
 
-    val slug = slugify(downloaded.name)
+    echo("Fetching Wikipedia article for ${book.englishName}…")
+    val article = WikipediaClient().use { it.fetchArticle(book.wikipediaSlug) }
+    val withAppendix = if (article != null) {
+        downloaded.copy(
+            appendix = Appendix(
+                title = "About ${book.englishName} (Wikipedia)",
+                html = article.html,
+                sourceUrl = article.url,
+            ),
+        )
+    } else {
+        echo("  (Wikipedia article unavailable; continuing without appendix)")
+        downloaded
+    }
+
+    val slug = slugify(withAppendix.name)
     val base = "$slug-${version.code.lowercase()}"
     val pdfPath = outDir.resolve("$base.pdf")
     val epubPath = outDir.resolve("$base.epub")
 
-    echo("Downloaded ${downloaded.chapters.size} chapter(s). Writing documents...")
-    PdfWriter.write(downloaded, pdfPath)
-    EpubWriter.write(downloaded, epubPath)
+    echo("Downloaded ${withAppendix.chapters.size} chapter(s). Writing documents...")
+    PdfWriter.write(withAppendix, pdfPath)
+    EpubWriter.write(withAppendix, epubPath)
 
     echo("PDF:  ${pdfPath.toAbsolutePath()}")
     echo("EPUB: ${epubPath.toAbsolutePath()}")

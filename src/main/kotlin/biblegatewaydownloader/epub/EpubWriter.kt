@@ -48,10 +48,36 @@ object EpubWriter {
             epub.addSection(chapter.heading, resource)
         }
 
+        book.appendix?.let { appendix ->
+            val resource = Resource(
+                appendixXhtml(appendix).toByteArray(Charsets.UTF_8),
+                "appendix.html",
+            )
+            epub.addSection(appendix.title, resource)
+        }
+
         EpubWriter().write(epub, output)
     }
 
+    private fun appendixXhtml(appendix: biblegatewaydownloader.model.Appendix): String {
+        val doc = blankXhtml(appendix.title)
+        val body = doc.body()
+        body.appendElement("h2").addClass("chapter").text(appendix.title)
+        body.appendElement("p").addClass("appendix-source")
+            .text("Source: ${appendix.sourceUrl}")
+        body.append(appendix.html)
+        return doc.outerHtml()
+    }
+
     private fun chapterXhtml(chapter: Chapter): String {
+        val doc = blankXhtml(chapter.heading)
+        val body = doc.body()
+        body.appendElement("h2").addClass("chapter").text(chapter.heading)
+        body.append(chapter.contentHtml)
+        return doc.outerHtml()
+    }
+
+    private fun blankXhtml(title: String): Document {
         val doc: Document = Jsoup.parse(
             """
             <!DOCTYPE html>
@@ -62,11 +88,7 @@ object EpubWriter {
             """.trimIndent(),
         )
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml)
-        doc.selectFirst("title")!!.text(chapter.heading)
-
-        val body = doc.body()
-        body.appendElement("h2").addClass("chapter").text(chapter.heading)
-        body.append(chapter.contentHtml)
-        return doc.outerHtml()
+        doc.selectFirst("title")!!.text(title)
+        return doc
     }
 }
