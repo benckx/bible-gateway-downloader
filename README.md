@@ -5,7 +5,7 @@ wanted to have the Wikipedia article in the same document to get some context.
 
 So I made a small Kotlin CLI that scrapes a full Bible **book** from [BibleGateway](https://www.biblegateway.com/) and
 exports it to a single **PDF** and **EPUB**. Each document also gets the book's **Wikipedia article** appended as an
-appendix (the EPUB includes it as a table-of-contents entry).
+appendix.
 
 Entirely Vibe-coded with Claude Opus.
 
@@ -71,9 +71,18 @@ Files are written as `<book>-<version>.pdf` / `.epub` in the output directory.
 | `NIV`  | New International Version |
 | `KJV`  | King James Version        |
 
+I can add more on demand, I only needed those for myself. Don't hesitate to open an issue if you want a specific version
+added.
+
 ## License
 
 - Code: [MIT](LICENSE)
 - Bundled font: GNU FreeFont (see `src/main/resources/fonts/FreeSerif-LICENSE.txt`)
 - Bible text and Wikipedia content are the property of their respective owners; this
   tool is for personal use only.
+
+## Distribution
+
+You need to have Java installed to run the project. You can then just follow the standard process to build and run a
+Gradle project (on either Windows, Linux or macOS). If you would like an easier distribution, don't hesiste to open an
+issue on this repo.
