@@ -1,11 +1,13 @@
 # About
 
-I wanted to be able to read Bible books on an epaper device but EPUB containing all books were impractical.
+I wanted to be able to read Bible books on an epaper device but EPUB containing all books were impractical. I also
+wanted to have the Wikipedia article in the same document to get some context.
 
-A small Kotlin CLI that scrapes a full Bible **book** from
-[BibleGateway](https://www.biblegateway.com/) and exports it to a single **PDF**
-and **EPUB**. Each document also gets the book's **Wikipedia article** appended
-as an appendix (the EPUB includes it as a table-of-contents entry).
+So I made a small Kotlin CLI that scrapes a full Bible **book** from [BibleGateway](https://www.biblegateway.com/) and
+exports it to a single **PDF** and **EPUB**. Each document also gets the book's **Wikipedia article** appended as an
+appendix (the EPUB includes it as a table-of-contents entry).
+
+Entirely Vibe-coded with Claude Opus.
 
 ## Features
 
