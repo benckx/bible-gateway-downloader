@@ -35,3 +35,6 @@ build
 
 # Generated PDF/EPUB output
 out/
+
+# local Calibre library
+calibre/
