@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.ben.manes.versions)
+    alias(libs.plugins.shadow)
     application
 }
 
@@ -28,6 +29,9 @@ dependencies {
 
     // Coroutines (runBlocking).
     implementation(libs.kotlinx.coroutines.core)
+
+    // Interactive terminal prompts.
+    implementation(libs.jline)
 
     // Logging backend.
     implementation(libs.slf4j.simple)

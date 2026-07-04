@@ -30,6 +30,7 @@ object PdfWriter {
     }
 
     fun write(book: Book, output: OutputStream) {
+        quietLogging()
         val doc = buildDocument(book)
         val w3c = W3CDom().fromJsoup(doc)
         PdfRendererBuilder()
@@ -37,6 +38,14 @@ object PdfWriter {
             .withW3cDocument(w3c, "https://www.biblegateway.com/")
             .toStream(output)
             .run()
+    }
+
+    private fun quietLogging() {
+        // openhtmltopdf's own logger and PDFBox's font fallback warnings are noisy;
+        // silence them so the interactive CLI output stays clean.
+        com.openhtmltopdf.util.XRLog.setLoggingEnabled(false)
+        java.util.logging.Logger.getLogger("org.apache.pdfbox").level = java.util.logging.Level.SEVERE
+        java.util.logging.Logger.getLogger("org.apache.fontbox").level = java.util.logging.Level.SEVERE
     }
 
     private fun buildDocument(book: Book): Document {

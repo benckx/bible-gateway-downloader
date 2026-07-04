@@ -9,7 +9,15 @@ class BookCrawler(
     private val onProgress: (String) -> Unit = {},
 ) {
 
-    suspend fun crawl(book: String, version: String, start: Int = 1): Book {
+    /**
+     * Download all chapters of the book identified by [osis] (e.g. "Ezek") in
+     * [version], starting at chapter [start].
+     *
+     * Searches are issued as OSIS references ("$osis.$n"), which Bible Gateway
+     * resolves regardless of the version's language. The localized display name
+     * is read from the fetched pages and used for titles and stop detection.
+     */
+    suspend fun crawl(osis: String, version: String, start: Int = 1): Book {
         require(start >= 1) { "start chapter must be >= 1" }
 
         val chapters = mutableListOf<Chapter>()
@@ -17,14 +25,14 @@ class BookCrawler(
         var number = start
 
         while (number <= MAX_CHAPTERS) {
-            val query = "${canonicalBook ?: book} $number"
-            onProgress("Fetching $query ($version)…")
+            val query = "$osis.$number"
+            onProgress("Fetching ${canonicalBook?.let { "$it $number" } ?: query} ($version)…")
 
             val html = client.fetchPassageHtml(query, version)
             val page = ChapterParser.parse(html)
 
             if (canonicalBook == null) {
-                canonicalBook = page.currentTitle?.let(::bookPartOf) ?: book
+                canonicalBook = page.currentTitle?.let(::bookPartOf) ?: osis
             }
 
             val heading = page.currentTitle ?: "$canonicalBook $number"
@@ -42,7 +50,7 @@ class BookCrawler(
             number++
         }
 
-        val name = canonicalBook ?: book
+        val name = canonicalBook ?: osis
         return Book(name = name, version = version, chapters = chapters)
     }
 

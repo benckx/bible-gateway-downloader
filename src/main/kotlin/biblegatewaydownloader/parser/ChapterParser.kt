@@ -3,22 +3,12 @@ package biblegatewaydownloader.parser
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
-/**
- * Result of parsing a single Bible Gateway print page.
- *
- * @param contentHtml cleaned passage HTML (inner markup of `.passage-content`)
- * @param nextChapterTitle the title of the next-chapter link (e.g. "Ézéchiel 2"),
- *        or null when the page has no next chapter.
- */
 data class ParsedPage(
     val currentTitle: String?,
     val contentHtml: String,
     val nextChapterTitle: String?,
 )
 
-/**
- * Extracts passage content and navigation info from a Bible Gateway print page.
- */
 object ChapterParser {
 
     private val NOISE_SELECTORS = listOf(

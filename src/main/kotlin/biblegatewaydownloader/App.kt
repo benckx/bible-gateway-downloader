@@ -1,8 +1,13 @@
 package biblegatewaydownloader
 
+import biblegatewaydownloader.cli.InteractivePrompt
+import biblegatewaydownloader.cli.PromptAbortedException
 import biblegatewaydownloader.client.BibleGatewayClient
 import biblegatewaydownloader.client.BookCrawler
 import biblegatewaydownloader.epub.EpubWriter
+import biblegatewaydownloader.model.BibleBook
+import biblegatewaydownloader.model.BibleVersion
+import biblegatewaydownloader.model.Testament
 import biblegatewaydownloader.pdf.PdfWriter
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.main
@@ -15,40 +20,88 @@ import kotlinx.coroutines.runBlocking
 import java.nio.file.Path
 import kotlin.io.path.createDirectories
 
+/** Scripted mode: `... --version SG21 --book Ezek [--start N] [--out DIR]`. */
 class DownloadCommand : CliktCommand(name = "bible-gateway-downloader") {
 
-    private val version by option("-v", "--version", help = "Bible version code, e.g. SG21").required()
-    private val book by option("-b", "--book", help = "Book name as on Bible Gateway, e.g. Ézéchiel").required()
+    private val versionCode by option("-v", "--version", help = "Bible version code, e.g. SG21").required()
+    private val bookKey by option("-b", "--book", help = "Book OSIS code (e.g. Ezek) or English name").required()
     private val start by option("-s", "--start", help = "First chapter to download").int().default(1)
     private val outDir by option("-o", "--out", help = "Output directory").path().default(Path.of("out"))
 
-    override fun run() = runBlocking {
-        outDir.createDirectories()
+    override fun run() {
+        val version = BibleVersion.entries.firstOrNull { it.code.equals(versionCode, ignoreCase = true) }
+            ?: throw IllegalArgumentException(
+                "Unknown version '$versionCode'. Known: ${BibleVersion.entries.joinToString { it.code }}",
+            )
+        val book = BibleBook.byOsis(bookKey)
+            ?: BibleBook.entries.firstOrNull { it.englishName.equals(bookKey, ignoreCase = true) }
+            ?: throw IllegalArgumentException("Unknown book '$bookKey'.")
 
-        val book = BibleGatewayClient().use { client ->
-            BookCrawler(client) { echo(it) }.crawl(book, version, start)
-        }
-
-        if (book.chapters.isEmpty()) {
-            echo("No chapters downloaded — check the book name and version.", err = true)
-            return@runBlocking
-        }
-
-        val slug = slugify(book.name)
-        val base = "$slug-${version.lowercase()}"
-        val pdfPath = outDir.resolve("$base.pdf")
-        val epubPath = outDir.resolve("$base.epub")
-
-        echo("Downloaded ${book.chapters.size} chapter(s). Writing documents…")
-        PdfWriter.write(book, pdfPath)
-        EpubWriter.write(book, epubPath)
-
-        echo("PDF:  ${pdfPath.toAbsolutePath()}")
-        echo("EPUB: ${epubPath.toAbsolutePath()}")
+        runDownload(book, version, start, outDir) { echo(it) }
     }
 }
 
-fun main(args: Array<String>) = DownloadCommand().main(args)
+fun main(args: Array<String>) {
+    if (args.isEmpty()) {
+        runInteractive()
+    } else {
+        DownloadCommand().main(args)
+    }
+}
+
+private fun runInteractive() {
+    try {
+        val version = InteractivePrompt.select(
+            "Select a version",
+            BibleVersion.entries,
+        ) { it.label }
+
+        val testament = InteractivePrompt.select(
+            "Select a testament",
+            Testament.entries.toList(),
+        ) { it.label }
+
+        val book = InteractivePrompt.select(
+            "Select a book",
+            BibleBook.of(testament),
+        ) { it.englishName }
+
+        runDownload(book, version, start = 1, outDir = Path.of("out")) { println(it) }
+    } catch (e: PromptAbortedException) {
+        System.err.println("Aborted.")
+    }
+}
+
+private fun runDownload(
+    book: BibleBook,
+    version: BibleVersion,
+    start: Int,
+    outDir: Path,
+    echo: (String) -> Unit,
+) = runBlocking {
+    outDir.createDirectories()
+
+    val downloaded = BibleGatewayClient().use { client ->
+        BookCrawler(client) { echo(it) }.crawl(book.osis, version.code, start)
+    }
+
+    if (downloaded.chapters.isEmpty()) {
+        System.err.println("No chapters downloaded - check the book and version.")
+        return@runBlocking
+    }
+
+    val slug = slugify(downloaded.name)
+    val base = "$slug-${version.code.lowercase()}"
+    val pdfPath = outDir.resolve("$base.pdf")
+    val epubPath = outDir.resolve("$base.epub")
+
+    echo("Downloaded ${downloaded.chapters.size} chapter(s). Writing documents...")
+    PdfWriter.write(downloaded, pdfPath)
+    EpubWriter.write(downloaded, epubPath)
+
+    echo("PDF:  ${pdfPath.toAbsolutePath()}")
+    echo("EPUB: ${epubPath.toAbsolutePath()}")
+}
 
 /** Turn a book name like "Ézéchiel" into a filename-safe slug like "ezechiel". */
 private fun slugify(name: String): String =
