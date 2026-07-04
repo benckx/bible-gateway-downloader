@@ -1,4 +1,6 @@
-# Bible Gateway Downloader
+# About
+
+I wanted to be able to read Bible books on an epaper device but epub containing all books were impractical.
 
 A small Kotlin CLI that scrapes a full Bible **book** from
 [BibleGateway](https://www.biblegateway.com/) and exports it to a single **PDF**
@@ -49,12 +51,12 @@ java -jar build/libs/bible-gateway-downloader-all.jar
 java -jar build/libs/bible-gateway-downloader-all.jar --version SG21 --book Ezek
 ```
 
-| Option            | Description                                   | Default |
-|-------------------|-----------------------------------------------|---------|
-| `-v`, `--version` | Bible version code (see below)                | —       |
-| `-b`, `--book`    | Book OSIS code (e.g. `Ezek`) or English name  | —       |
-| `-s`, `--start`   | First chapter to download                     | `1`     |
-| `-o`, `--out`     | Output directory                              | `out`   |
+| Option            | Description                                  | Default |
+|-------------------|----------------------------------------------|---------|
+| `-v`, `--version` | Bible version code (see below)               | —       |
+| `-b`, `--book`    | Book OSIS code (e.g. `Ezek`) or English name | —       |
+| `-s`, `--start`   | First chapter to download                    | `1`     |
+| `-o`, `--out`     | Output directory                             | `out`   |
 
 Files are written as `<book>-<version>.pdf` / `.epub` in the output directory.
 
