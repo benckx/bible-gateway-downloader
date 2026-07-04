@@ -47,6 +47,24 @@ java -jar build/libs/bible-gateway-downloader-all.jar
 
 `run.sh` builds the fat jar automatically if it is missing.
 
+```
+➜  bible-gateway-downloader git:(main) ./run.sh 
+✔ Select a version Segond 21 (SG21)
+✔ Select a testament New Testament
+? Select a book (type to filter, ↑/↓ to move, Enter to select)
+  Matthew
+  Mark
+  Luke
+❯ John
+  Acts
+  Romans
+  1 Corinthians
+  2 Corinthians
+  Galatians
+  Ephesians
+  … 27 matches, showing 1-10
+```
+
 ### Scripted mode
 
 ```bash
