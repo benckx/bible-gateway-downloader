@@ -1,6 +1,6 @@
 # About
 
-I wanted to be able to read Bible books on an epaper device but epub containing all books were impractical.
+I wanted to be able to read Bible books on an epaper device but EPUB containing all books were impractical.
 
 A small Kotlin CLI that scrapes a full Bible **book** from
 [BibleGateway](https://www.biblegateway.com/) and exports it to a single **PDF**
