@@ -7,7 +7,7 @@ So I made a small Kotlin CLI that download a full Bible **book** from [BibleGate
 exports it to a single **PDF** (mostly for debugging) and **EPUB** (for a reader device). Each document also gets the
 book's **Wikipedia article** appended as an appendix.
 
-Entirely Vibe-coded with Claude Opus.
+Mostly Vibe-coded with Claude Opus.
 
 ## Features
 
