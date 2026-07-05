@@ -11,6 +11,7 @@ import org.jsoup.nodes.Document
 import java.io.OutputStream
 import java.nio.file.Path
 import kotlin.io.path.outputStream
+import kotlin.text.Charsets.UTF_8
 import io.documentnode.epub4j.domain.Book as EpubBook
 
 /**
@@ -37,12 +38,12 @@ object EpubWriter {
         metadata.addAuthor(Author("Bible", "Gateway"))
         metadata.language = "fr"
 
-        epub.resources.add(Resource(CSS.toByteArray(Charsets.UTF_8), "style.css"))
+        epub.resources.add(Resource(CSS.toByteArray(UTF_8), "style.css"))
 
         book.chapters.forEach { chapter ->
             val href = "chap-${chapter.number}.html"
             val resource = Resource(
-                chapterXhtml(chapter).toByteArray(Charsets.UTF_8),
+                chapterXhtml(chapter).toByteArray(UTF_8),
                 href,
             )
             epub.addSection(chapter.heading, resource)
@@ -50,7 +51,7 @@ object EpubWriter {
 
         book.appendix?.let { appendix ->
             val resource = Resource(
-                appendixXhtml(appendix).toByteArray(Charsets.UTF_8),
+                appendixXhtml(appendix).toByteArray(UTF_8),
                 "appendix.html",
             )
             epub.addSection(appendix.title, resource)
@@ -62,8 +63,13 @@ object EpubWriter {
     private fun appendixXhtml(appendix: biblegatewaydownloader.model.Appendix): String {
         val doc = blankXhtml(appendix.title)
         val body = doc.body()
-        body.appendElement("h2").addClass("chapter").text(appendix.title)
-        body.appendElement("p").addClass("appendix-source")
+        body
+            .appendElement("h2")
+            .addClass("chapter")
+            .text(appendix.title)
+        body
+            .appendElement("p")
+            .addClass("appendix-source")
             .text("Source: ${appendix.sourceUrl}")
         body.append(appendix.html)
         return doc.outerHtml()

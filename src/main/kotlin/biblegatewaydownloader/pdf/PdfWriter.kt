@@ -1,6 +1,8 @@
 package biblegatewaydownloader.pdf
 
 import biblegatewaydownloader.model.Book
+import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder
+import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder.FontStyle.*
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder
 import com.openhtmltopdf.util.XRLog
 import org.jsoup.Jsoup
@@ -24,14 +26,14 @@ object PdfWriter {
     private data class BundledFont(
         val resource: String,
         val weight: Int,
-        val style: com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder.FontStyle,
+        val style: BaseRendererBuilder.FontStyle,
     )
 
     private val FONTS = listOf(
-        BundledFont("/fonts/FreeSerif.ttf", 400, com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder.FontStyle.NORMAL),
-        BundledFont("/fonts/FreeSerifBold.ttf", 700, com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder.FontStyle.NORMAL),
-        BundledFont("/fonts/FreeSerifItalic.ttf", 400, com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder.FontStyle.ITALIC),
-        BundledFont("/fonts/FreeSerifBoldItalic.ttf", 700, com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder.FontStyle.ITALIC),
+        BundledFont("/fonts/FreeSerif.ttf", 400, NORMAL),
+        BundledFont("/fonts/FreeSerifBold.ttf", 700, NORMAL),
+        BundledFont("/fonts/FreeSerifItalic.ttf", 400, ITALIC),
+        BundledFont("/fonts/FreeSerifBoldItalic.ttf", 700, ITALIC),
     )
 
     private val CSS = """
@@ -103,11 +105,20 @@ object PdfWriter {
         }
 
         book.appendix?.let { appendix ->
-            body.appendElement("h2").addClass("chapter appendix").text(appendix.title)
-            body.appendElement("p").addClass("appendix-source")
+            body
+                .appendElement("h2")
+                .addClass("chapter appendix")
+                .text(appendix.title)
+            body
+                .appendElement("p")
+                .addClass("appendix-source")
                 .text("Source: ${appendix.sourceUrl}")
-            body.appendElement("div").addClass("appendix-content").append(appendix.html)
+            body
+                .appendElement("div")
+                .addClass("appendix-content")
+                .append(appendix.html)
         }
+
         return doc
     }
 }
