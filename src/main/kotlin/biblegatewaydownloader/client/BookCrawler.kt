@@ -2,7 +2,7 @@ package biblegatewaydownloader.client
 
 import biblegatewaydownloader.model.Book
 import biblegatewaydownloader.model.Chapter
-import biblegatewaydownloader.model.Version
+import biblegatewaydownloader.model.bible.Version
 import biblegatewaydownloader.parser.ChapterParser
 
 class BookCrawler(

@@ -31,7 +31,7 @@ object EpubWriter {
         output.outputStream().use { write(book, it) }
     }
 
-    fun write(book: Book, output: OutputStream) {
+    private fun write(book: Book, output: OutputStream) {
         val epub = EpubBook()
         val metadata: Metadata = epub.metadata
         metadata.addTitle("${book.name} (${book.version})")

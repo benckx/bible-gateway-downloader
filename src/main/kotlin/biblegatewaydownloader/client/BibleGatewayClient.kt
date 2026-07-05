@@ -1,6 +1,6 @@
 package biblegatewaydownloader.client
 
-import biblegatewaydownloader.model.Version
+import biblegatewaydownloader.model.bible.Version
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.get

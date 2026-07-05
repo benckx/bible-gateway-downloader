@@ -7,9 +7,9 @@ import biblegatewaydownloader.client.BookCrawler
 import biblegatewaydownloader.client.WikipediaClient
 import biblegatewaydownloader.epub.EpubWriter
 import biblegatewaydownloader.model.Appendix
-import biblegatewaydownloader.model.BibleBook
-import biblegatewaydownloader.model.Version
-import biblegatewaydownloader.model.Testament
+import biblegatewaydownloader.model.bible.BibleBook
+import biblegatewaydownloader.model.bible.Version
+import biblegatewaydownloader.model.bible.Testament
 import biblegatewaydownloader.pdf.PdfWriter
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.main

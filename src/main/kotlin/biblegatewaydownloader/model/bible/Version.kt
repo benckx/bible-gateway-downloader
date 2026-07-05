@@ -1,4 +1,4 @@
-package biblegatewaydownloader.model
+package biblegatewaydownloader.model.bible
 
 /**
  * A Bible version/translation supported by the tool.

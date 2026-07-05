@@ -1,4 +1,4 @@
-package biblegatewaydownloader.model
+package biblegatewaydownloader.model.bible
 
 /**
  * The 66 books of the Protestant canon, in canonical order.
