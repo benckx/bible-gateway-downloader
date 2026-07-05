@@ -1,7 +1,7 @@
 # About
 
-I wanted to be able to read Bible books on an e-paper reader device but EPUB containing all books were impractical (
-being too large). I also wanted to have the Wikipedia article in the same document to get some context.
+I wanted to be able to read Bible books on an e-paper reader device but EPUB containing all books were impractical (too
+large). I also wanted to have the Wikipedia article in the same document to get some context.
 
 So I made a small Kotlin CLI that download a full Bible **book** from [BibleGateway](https://www.biblegateway.com/) and
 exports it to a single **PDF** (mostly for debugging) and **EPUB** (for a reader device). Each document also gets the
