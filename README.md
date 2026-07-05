@@ -28,7 +28,7 @@ Mostly Vibe-coded with Claude Opus.
 ## Build
 
 ```bash
-./gradlew build
+./gradlew clean build
 ```
 
 This produces a runnable fat jar at `build/libs/bible-gateway-downloader-all.jar`.
@@ -45,7 +45,8 @@ Run with no arguments to be prompted for version, testament and book:
 java -jar build/libs/bible-gateway-downloader-all.jar
 ```
 
-`run.sh` builds the fat jar automatically if it is missing.
+`run.sh` builds the fat jar automatically if it is missing. This will open the interactive CLI tool, which should looks
+like this (with colors, arrow navigation and type-to-filter):
 
 ```
 ➜  bible-gateway-downloader git:(main) ./run.sh 
@@ -67,6 +68,8 @@ java -jar build/libs/bible-gateway-downloader-all.jar
 
 ### Scripted mode
 
+Fetch what you need in a single command, without interaction:
+
 ```bash
 java -jar build/libs/bible-gateway-downloader-all.jar --version SG21 --book Ezek
 ```
@@ -77,6 +80,8 @@ java -jar build/libs/bible-gateway-downloader-all.jar --version SG21 --book Ezek
 | `-b`, `--book`    | Book OSIS code (e.g. `Ezek`) or English name | —       |
 | `-s`, `--start`   | First chapter to download                    | `1`     |
 | `-o`, `--out`     | Output directory                             | `out`   |
+
+## Output
 
 Files are written as `<book>-<version>.pdf` / `.epub` in the output directory.
 
@@ -101,6 +106,6 @@ added.
 
 ## Distribution
 
-You need to have Java installed to run the project. You can then just follow the standard process to build and run a
-Gradle project (on either Windows, Linux or macOS). If you would like an easier distribution, don't hesiste to open an
-issue on this repo.
+You need to have Java installed to build and run the project. You can then just follow the standard process to build and
+run a Gradle project (on either Windows, Linux or macOS). If you would like a more user-friendly distribution (e.g. a
+bat you could just run on Windows without installing anything), don't hesiste to open an issue on this repo.
