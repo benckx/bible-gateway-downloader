@@ -20,6 +20,7 @@ import com.github.ajalt.clikt.parameters.types.int
 import com.github.ajalt.clikt.parameters.types.path
 import kotlinx.coroutines.runBlocking
 import java.nio.file.Path
+import java.text.Normalizer
 import kotlin.io.path.createDirectories
 
 /** Scripted mode: `... --version SG21 --book Ezek [--start N] [--out DIR]`. */
@@ -120,9 +121,9 @@ private fun runDownload(
     echo("EPUB: ${epubPath.toAbsolutePath()}")
 }
 
-/** Turn a book name like "Ézéchiel" into a filename-safe slug like "ezechiel". */
+/** Turn a book name like "Ezechiel" into a filename-safe slug like "ezechiel". */
 private fun slugify(name: String): String =
-    java.text.Normalizer.normalize(name, java.text.Normalizer.Form.NFD)
+    Normalizer.normalize(name, Normalizer.Form.NFD)
         .replace(Regex("\\p{M}+"), "")
         .lowercase()
         .replace(Regex("[^a-z0-9]+"), "-")
