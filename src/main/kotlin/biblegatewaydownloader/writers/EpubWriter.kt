@@ -1,4 +1,4 @@
-package biblegatewaydownloader.epub
+package biblegatewaydownloader.writers
 
 import biblegatewaydownloader.model.Book
 import biblegatewaydownloader.model.Chapter

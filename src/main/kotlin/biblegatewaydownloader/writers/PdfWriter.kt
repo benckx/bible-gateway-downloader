@@ -1,8 +1,7 @@
-package biblegatewaydownloader.pdf
+package biblegatewaydownloader.writers
 
 import biblegatewaydownloader.model.Book
 import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder
-import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder.FontStyle.*
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder
 import com.openhtmltopdf.util.XRLog
 import org.jsoup.Jsoup
@@ -10,10 +9,12 @@ import org.jsoup.helper.W3CDom
 import org.jsoup.nodes.Document
 import java.io.OutputStream
 import java.nio.file.Path
+import java.util.logging.Level
+import java.util.logging.Logger
 import kotlin.io.path.outputStream
 
 /**
- * Renders a [Book] to a single PDF document via openhtmltopdf.
+ * Renders a [biblegatewaydownloader.model.Book] to a single PDF document via openhtmltopdf.
  *
  * A bundled Unicode font (GNU FreeSerif) is embedded so that Greek, Hebrew and
  * accented Latin text (e.g. terms quoted in the Wikipedia appendix) render
@@ -30,10 +31,10 @@ object PdfWriter {
     )
 
     private val FONTS = listOf(
-        BundledFont("/fonts/FreeSerif.ttf", 400, NORMAL),
-        BundledFont("/fonts/FreeSerifBold.ttf", 700, NORMAL),
-        BundledFont("/fonts/FreeSerifItalic.ttf", 400, ITALIC),
-        BundledFont("/fonts/FreeSerifBoldItalic.ttf", 700, ITALIC),
+        BundledFont("/fonts/FreeSerif.ttf", 400, BaseRendererBuilder.FontStyle.NORMAL),
+        BundledFont("/fonts/FreeSerifBold.ttf", 700, BaseRendererBuilder.FontStyle.NORMAL),
+        BundledFont("/fonts/FreeSerifItalic.ttf", 400, BaseRendererBuilder.FontStyle.ITALIC),
+        BundledFont("/fonts/FreeSerifBoldItalic.ttf", 700, BaseRendererBuilder.FontStyle.ITALIC),
     )
 
     private val CSS = """
@@ -72,8 +73,8 @@ object PdfWriter {
     }
 
     private val silencedLoggers = listOf(
-        java.util.logging.Logger.getLogger("org.apache.pdfbox"),
-        java.util.logging.Logger.getLogger("org.apache.fontbox"),
+        Logger.getLogger("org.apache.pdfbox"),
+        Logger.getLogger("org.apache.fontbox"),
     )
 
     private fun quietLogging() {
@@ -81,7 +82,7 @@ object PdfWriter {
         // silence them so the interactive CLI output stays clean. Strong references
         // are kept above so the JVM does not GC these loggers and reset their level.
         XRLog.setLoggingEnabled(false)
-        silencedLoggers.forEach { it.level = java.util.logging.Level.SEVERE }
+        silencedLoggers.forEach { it.level = Level.SEVERE }
     }
 
     private fun buildDocument(book: Book): Document {

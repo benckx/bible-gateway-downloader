@@ -5,12 +5,12 @@ import biblegatewaydownloader.cli.PromptAbortedException
 import biblegatewaydownloader.client.BibleGatewayClient
 import biblegatewaydownloader.client.BookCrawler
 import biblegatewaydownloader.client.WikipediaClient
-import biblegatewaydownloader.epub.EpubWriter
+import biblegatewaydownloader.writers.EpubWriter
 import biblegatewaydownloader.model.Appendix
 import biblegatewaydownloader.model.bible.BibleBook
 import biblegatewaydownloader.model.bible.Version
 import biblegatewaydownloader.model.bible.Testament
-import biblegatewaydownloader.pdf.PdfWriter
+import biblegatewaydownloader.writers.PdfWriter
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.parameters.options.default
