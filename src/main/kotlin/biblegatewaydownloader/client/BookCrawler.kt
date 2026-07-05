@@ -2,6 +2,7 @@ package biblegatewaydownloader.client
 
 import biblegatewaydownloader.model.Book
 import biblegatewaydownloader.model.Chapter
+import biblegatewaydownloader.model.Version
 import biblegatewaydownloader.parser.ChapterParser
 
 class BookCrawler(
@@ -17,7 +18,7 @@ class BookCrawler(
      * resolves regardless of the version's language. The localized display name
      * is read from the fetched pages and used for titles and stop detection.
      */
-    suspend fun crawl(osis: String, version: String, start: Int = 1): Book {
+    suspend fun crawl(osis: String, version: Version, start: Int = 1): Book {
         require(start >= 1) { "start chapter must be >= 1" }
 
         val chapters = mutableListOf<Chapter>()

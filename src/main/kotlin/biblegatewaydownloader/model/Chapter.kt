@@ -9,7 +9,7 @@ data class Chapter(
 
 data class Book(
     val name: String,
-    val version: String,
+    val version: Version,
     val chapters: List<Chapter>,
     val appendix: Appendix? = null,
 )

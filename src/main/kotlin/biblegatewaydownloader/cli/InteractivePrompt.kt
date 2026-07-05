@@ -161,7 +161,7 @@ object InteractivePrompt {
     private fun readKey(reader: NonBlockingReader): Key {
         val c = try {
             reader.read()
-        } catch (e: IOError) {
+        } catch (_: IOError) {
             return Key.ABORT
         }
         return when (c) {

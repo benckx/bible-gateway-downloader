@@ -8,7 +8,7 @@ import biblegatewaydownloader.client.WikipediaClient
 import biblegatewaydownloader.epub.EpubWriter
 import biblegatewaydownloader.model.Appendix
 import biblegatewaydownloader.model.BibleBook
-import biblegatewaydownloader.model.BibleVersion
+import biblegatewaydownloader.model.Version
 import biblegatewaydownloader.model.Testament
 import biblegatewaydownloader.pdf.PdfWriter
 import com.github.ajalt.clikt.core.CliktCommand
@@ -31,9 +31,9 @@ class DownloadCommand : CliktCommand(name = "bible-gateway-downloader") {
     private val outDir by option("-o", "--out", help = "Output directory").path().default(Path.of("out"))
 
     override fun run() {
-        val version = BibleVersion.entries.firstOrNull { it.code.equals(versionCode, ignoreCase = true) }
+        val version = Version.entries.firstOrNull { it.code.equals(versionCode, ignoreCase = true) }
             ?: throw IllegalArgumentException(
-                "Unknown version '$versionCode'. Known: ${BibleVersion.entries.joinToString { it.code }}",
+                "Unknown version '$versionCode'. Known: ${Version.entries.joinToString { it.code }}",
             )
         val book = BibleBook.byOsis(bookKey)
             ?: BibleBook.entries.firstOrNull { it.englishName.equals(bookKey, ignoreCase = true) }
@@ -55,7 +55,7 @@ private fun runInteractive() {
     try {
         val version = InteractivePrompt.select(
             "Select a version",
-            BibleVersion.entries,
+            Version.entries,
         ) { it.label }
 
         val testament = InteractivePrompt.select(
@@ -69,14 +69,14 @@ private fun runInteractive() {
         ) { it.englishName }
 
         runDownload(book, version, start = 1, outDir = Path.of("out")) { println(it) }
-    } catch (e: PromptAbortedException) {
+    } catch (_: PromptAbortedException) {
         System.err.println("Aborted.")
     }
 }
 
 private fun runDownload(
     book: BibleBook,
-    version: BibleVersion,
+    version: Version,
     start: Int,
     outDir: Path,
     echo: (String) -> Unit,
@@ -84,7 +84,7 @@ private fun runDownload(
     outDir.createDirectories()
 
     val downloaded = BibleGatewayClient().use { client ->
-        BookCrawler(client) { echo(it) }.crawl(book.osis, version.code, start)
+        BookCrawler(client) { echo(it) }.crawl(book.osis, version, start)
     }
 
     if (downloaded.chapters.isEmpty()) {

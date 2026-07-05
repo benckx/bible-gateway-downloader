@@ -1,5 +1,6 @@
 package biblegatewaydownloader.client
 
+import biblegatewaydownloader.model.Version
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.get
@@ -21,13 +22,13 @@ class BibleGatewayClient(
     private val client = HttpClient(CIO)
 
     /**
-     * Fetch the raw HTML of the print page for [search] (e.g. "Ézéchiel 1")
+     * Fetch the raw HTML of the print page for [search] (e.g. "Ezechiel 1")
      * in the given [version] (e.g. "SG21").
      */
-    suspend fun fetchPassageHtml(search: String, version: String): String {
+    suspend fun fetchPassageHtml(search: String, version: Version): String {
         val response = client.get(PASSAGE_URL) {
             parameter("search", search)
-            parameter("version", version)
+            parameter("version", version.code)
             parameter("interface", "print")
             header("User-Agent", userAgent)
         }
