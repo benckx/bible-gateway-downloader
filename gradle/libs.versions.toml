@@ -2,7 +2,7 @@
 # https://docs.gradle.org/current/userguide/platforms.html#sub::toml-dependencies-format
 
 [versions]
-junit-jupiter-engine = "6.1.1"
+junit-jupiter-engine = "6.1.2"
 ktor = "3.5.1"
 ben-manes-versions = "0.54.0"
 jsoup = "1.22.2"
