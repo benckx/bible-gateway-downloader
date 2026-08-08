@@ -3,7 +3,7 @@
 
 [versions]
 junit-jupiter-engine = "6.1.1"
-ktor = "3.5.1"
+ktor = "3.5.2"
 ben-manes-versions = "0.54.0"
 jsoup = "1.22.2"
 openhtmltopdf = "1.0.10"
