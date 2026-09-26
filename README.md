@@ -1,3 +1,5 @@
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/benckx/2) [![Build](https://github.com/benckx/bible-gateway-downloader/actions/workflows/build.yml/badge.svg)](https://github.com/benckx/bible-gateway-downloader/actions/workflows/build.yml)
+
 # About
 
 I wanted to be able to read Bible books on an e-paper reader device but EPUB containing all books were impractical (too
