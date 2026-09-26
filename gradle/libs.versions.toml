@@ -5,7 +5,7 @@
 junit-jupiter-engine = "6.1.1"
 ktor = "3.5.1"
 ben-manes-versions = "0.64.0"
-jsoup = "1.22.2"
+jsoup = "1.23.2"
 openhtmltopdf = "1.0.10"
 epub4j = "4.2.3"
 slf4j = "2.0.20"
